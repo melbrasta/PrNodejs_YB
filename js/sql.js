@@ -4,7 +4,8 @@ let db = new sqlite3.Database('../Test/Kassensystem.db',sqlite3.OPEN_READWRITE, 
 	if (err) {
 		console.error(err.message);
 	}
-	console.log('connected');
+	let query= db.run('SELECT * FROM (Kategorien)');
+	console.log(query);
 }
 );
 
