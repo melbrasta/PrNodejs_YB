@@ -6,24 +6,143 @@ Tabellenstrukturen:
 -------------------------
 Kategorien:				|
 -------------------------
-Kategoriename		pk	|		-------------------------		
-MwSt					|								|
+ID					pk	|		-------------------------
+Kategoriename			|								|		
+						|								|
 -------------------------								|
 														|
 -------------------------								|
 Produkte:				|								|
 -------------------------								|
-Name				pk	|------------------------|		|
-gehört zu Kategorie:fk	|		-----------------|-------
+ID						|								|
+Name				pk	|-------------------------		|
+Kategorie:		fk		|		-----------------|-------
 Preis					|						 |
+MwSt					|						 |
 -------------------------						 |
 												 |
 												 |
 -------------------------						 |
-Bestelldetails:			|						 |
+Bestelldetails:			|						 |id
 ---------------			|						 |
 id					pk	|						 |
 Produktname			fk	|-------------------------
 Anzahl					|
-Gesamtpreis				|
+Stückpreis				|
 -------------------------
+
+
+
+CREATE TABLE "Kategorien" (
+	"ID"	INTEGER,
+	"Kategoriename"	TEXT NOT NULL,
+	PRIMARY KEY("ID" AUTOINCREMENT)
+);
+
+
+insert into Kategorien (Kategoriename) values ('Speisen');
+insert into Kategorien (Kategoriename) values ('Getraenke');
+insert into Kategorien (Kategoriename) values ('Nachspeise');
+insert into Kategorien (Kategoriename) values ('Cocktails');
+insert into Kategorien (Kategoriename) values ('ToGo');
+
+
+
+
+
+
+CREATE TABLE "Produkte" (
+	"ID"	INTEGER,
+	"Name"	TEXT,
+	"Kategorie_ID"	INTEGER,
+	"Preis"	INTEGER NOT NULL,
+	"MwSt in%"	INTEGER NOT NULL DEFAULT 19,
+	FOREIGN KEY("Kategorie_ID") REFERENCES "Kategorien"("ID") ON UPDATE cascade,
+	PRIMARY KEY("ID" AUTOINCREMENT)
+);id
+
+
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (1, 'Beef - Top Butt Aaa', 1, 13.54);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (2, 'Wine - Sawmill Creek Autumn', 2, 84.28);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (3, 'Duck - Legs', 3, 17.11);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (4, 'Beans - Black Bean, Canned', 4, 13.69);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (5, 'Creme De Cacao White', 5, 67.47);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (6, 'Wine - White, Riesling, Semi - Dry', 4, 2.47);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (7, 'Lychee - Canned', 1, 27.2);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (8, 'Lentils - Green, Dry', 5, 25.42);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (9, 'Daves Island Stinger', 3, 12.6);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (10, 'Flour - Fast / Rapid', 1, 12.84);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (11, 'Dasheen', 2, 9.28);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (12, 'Sole - Iqf', 2, 12.87);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (13, 'Salt - Table', 1, 12.79);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (14, 'Truffle Paste', 5, 22.0);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (15, 'Gin - Gilbeys London, Dry', 4, 4.06);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (16, 'Wine - Stoneliegh Sauvignon', 3, 16.69);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (17, 'Apple - Macintosh', 3, 9.05);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (18, 'Gatorade - Lemon Lime', 3, 2.45);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (19, 'Wine - Carmenere Casillero Del', 1, 27.52);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (20, 'Chinese Foods - Cantonese', 1, 3.65);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (21, 'Appetizer - Shrimp Puff', 1, 5.19);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (22, 'Truffle Shells - White Chocolate', 1, 16.7);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (23, 'Cocoa Feuilletine', 5, 20.76);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (24, 'Magnotta Bel Paese Red', 5, 10.75);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (25, 'Kaffir Lime Leaves', 2, 16.66);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (26, 'Bread - Rolls, Rye', 1, 23.16);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (27, 'Miso - Soy Bean Paste', 3, 5.36);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (28, 'Wine - Touraine Azay - Le - Rideau', 2, 25.14);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (29, 'Corn - Cream, Canned', 2, 29.85);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (30, 'Veal - Liver', 5, 9.42);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (31, 'Carroway Seed', 5, 10.99);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (32, 'Onions - Cooking', 4, 17.73);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (33, 'Garbage Bag - Clear', 5, 24.71);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (34, 'Banana - Green', 4, 19.86);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (35, 'Cake - French Pear Tart', 3, 20.25);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (36, 'Sauce - Caesar Dressing', 3, 22.69);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (37, 'Soap - Hand Soap', 5, 25.03);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (38, 'Wine - Rosso Toscano Igt', 4, 29.52);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (39, 'Artichoke - Hearts, Canned', 4, 5.05);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (40, 'Pastry - Apple Large', 3, 29.55);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (41, 'Table Cloth 144x90 White', 1, 25.28);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (42, 'Juice - Grapefruit, 341 Ml', 2, 5.85);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (43, 'Bread - Olive Dinner Roll', 3, 25.2);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (44, 'Tea - Orange Pekoe', 5, 9.27);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (45, 'Sesame Seed Black', 5, 16.02);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (46, 'Nantucket Cranberry Juice', 1, 12.12);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (47, 'Cheese - Blue', 3, 28.94);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (48, 'Cloves - Whole', 5, 23.77);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (49, 'Spring Roll Wrappers', 5, 19.31);
+insert into Produkte (ID, Name, Kategorie_ID, Preis) values (50, 'Cardamon Ground', 5, 25.19);
+
+
+
+
+
+
+CREATE TABLE "Bestellungen" (
+	"ID"	INTEGER,
+	"Datum"	INTEGER NOT NULL,
+	PRIMARY KEY("ID" AUTOINCREMENT)
+);
+
+
+insert into Bestellungen (Datum) values (21022022);
+
+
+
+
+
+
+
+CREATE TABLE "Bestelldetails" (
+	"ID"	INTEGER,
+	"Produkt"	TEXT,
+	"Anzahl"	INTEGER,
+	"Stueckpreis"	INTEGER,
+	"MwSt"	INTEGER NOT NULL,
+	FOREIGN KEY("MwSt") REFERENCES "Produkte"("MwSt in%") ON UPDATE cascade,
+	FOREIGN KEY("Stueckpreis") REFERENCES "Produkte"("Preis") ON UPDATE cascade,
+	FOREIGN KEY("Produkt") REFERENCES "Produkte"("Name") ON UPDATE cascade,
+	PRIMARY KEY("ID" AUTOINCREMENT)
+);
+
+
