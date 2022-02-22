@@ -1,6 +1,6 @@
 const http = require('http');
 const fs = require('fs');
-const sqlite3 = require('sqlite3');
+
 const server = http.createServer( ( req, res ) => {
 	console.log( req.url );
 
@@ -13,7 +13,7 @@ if (filename.length == 0)
 }
 
 fs.readFile( filename, (err,content)=>{
-	if (err) throw err;
+	if (err) throw err
 //console.log(content);
 			res.write( content.toString() );
 
@@ -24,6 +24,7 @@ fs.readFile( filename, (err,content)=>{
 /*	else {
 		res.statusCode = 404;
 		res.end();
+	
 
 	}
 	*/
