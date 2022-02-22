@@ -24,10 +24,12 @@ fs.readFile( filename, (err,content)=>{
 /*	else {
 		res.statusCode = 404;
 		res.end();
-	
+
 
 	}
 	*/
+
+
 
 });
 
