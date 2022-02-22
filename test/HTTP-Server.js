@@ -1,6 +1,7 @@
+/*
 const http = require('http');
 const fs = require('fs');
-
+const sqlite3 = require('sqlite3');
 const server = http.createServer( ( req, res ) => {
 	console.log( req.url );
 
@@ -21,16 +22,29 @@ fs.readFile( filename, (err,content)=>{
 		});
 
 
-/*	else {
-		res.statusCode = 404;
+
+	let db = new sqlite3.Database('../test/Kassensystem.db',sqlite3.OPEN_READWRITE, (err) =>{
+  	if (err) {
+  		console.error(err.message);
+  	}
+	let query1 = 'SELECT * FROM (Kategorien) WHERE ID = 1';
+
+
+
+	stmt = db.prepare( query1 ) ;
+
+	stmt.all( 1, (err, rows ) => {
+
+			res.write( rows[0].Kategorie_ID );
 		res.end();
+	} );
 
 
-	}
-	*/
+});
 
 
 
 });
 
 server.listen( 8000 );
+*/

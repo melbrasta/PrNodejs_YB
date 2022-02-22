@@ -26,7 +26,7 @@ const server = http.createServer( ( req, res ) => {
 */
 
 
-	let db = new sqlite3.Database('../test/Kassensystem.db',sqlite3.OPEN_READWRITE, (err) =>{
+	let db = new sqlite3.Database('Kassensystem.db',sqlite3.OPEN_READWRITE, (err) =>{
   	if (err) {
   		console.error(err.message);
   	}
@@ -37,12 +37,14 @@ const server = http.createServer( ( req, res ) => {
 	stmt = db.prepare( query1 ) ;
 
 	stmt.all( 1, (err, rows ) => {
+		if (err) {
+			console.error(err.message);
+		}
 
-			res.write( rows[0].Nachspeisen );
+			res.write( rows[0].Kategorie_ID );
 		res.end();
 	} );
 
 });
-
-server.listen( 8000 );
 })
+server.listen( 8000 );
