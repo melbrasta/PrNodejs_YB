@@ -9,8 +9,6 @@
 # ignore ALL files in ANY directory named temp
 temp/
 
-# Alles was Test beinhaltet
-Test
 
 # Kopie
 *Kopie*
