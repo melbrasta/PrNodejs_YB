@@ -4,10 +4,24 @@ let db = new sqlite3.Database('../Test/Kassensystem.db',sqlite3.OPEN_READWRITE, 
 	if (err) {
 		console.error(err.message);
 	}
-	let query= db.run('SELECT * FROM (Kategorien)');
-	console.log(query);
+	let query= db.each('SELECT * FROM (Produkte) WHERE Kategorie_ID = 1', (err,row)=> {
+		console.log( row);
+
+	});
 }
 );
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //let id = "1";
