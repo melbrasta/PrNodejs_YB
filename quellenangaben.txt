@@ -1,0 +1,4 @@
+https://metabox.io/send-get-post-request-with-javascript-fetch-api/
+
+
+https://www.sqlitetutorial.net/sqlite-nodejs/insert/
