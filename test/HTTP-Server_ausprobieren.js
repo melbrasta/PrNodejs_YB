@@ -11,68 +11,125 @@ const server = http.createServer( ( req, res ) => {
 
 	function readFromDatabase()
 	{
-	  let objProd = [
-	    //  {isselected: false}, {isselected: false},				//hier muss die Ausgabe der Datenbankanfrage rein
-			showSpeisen(),
-			showGetraenke(),
-			showNachspeisen(),
-			showCocktails(),
-			showToGo()
-	  ];
-		return objProd;
+
+		return new Promise( (resolve,rej)=> {
+
+			let promises = [];
+
+
+			promises.push( showSpeisen() );
+			promises.push( showGetraenke() );
+			promises.push( showNachspeisen() );
+			promises.push( showCocktails() );
+			promises.push( showToGo() );
+
+			Promise.all( promises ) .then( results => { resolve( results )})
+
+
+		});
+
+/*		let Speisen = [
+			showSpeisen()
+		];
+*/
+
+	//		Speisen : Speisen
+//		console.log(objProd[0]);
 	}
+
+
+/* Sicherheitskopie
+function readFromDatabase()
+{
+	let objProd = [
+		//  {isselected: false}, {isselected: false},				//hier muss die Ausgabe der Datenbankanfrage rein
+		showSpeisen(),
+		showGetraenke(),
+		showNachspeisen(),
+		showCocktails(),
+		showToGo()
+	];
+	return objProd;
+//		console.log(objProd[0]);
+}
+*/
+
 
 
 
 
 	function showSpeisen()      // Zeige alle Produkte der Kategorie 1 (Speisen)
 	{
-	  	let db = new sqlite3.Database('Kassensystem.db');
-	  	let query= db.each('SELECT * FROM (Produkte) WHERE Kategorie_ID = 1', (err,row)=> {
-//	  		console.log( row);
-//				Speisen= row;
-//				console.log(Speisen);
-	  	});
+		 return new Promise( (resolve,rej)=> {
+
+			 let db = new sqlite3.Database('Kassensystem.db');
+ 	  	 db.all('SELECT * FROM (Produkte) WHERE Kategorie_ID = 1', (err,row)=> {
+ 	  		//console.log( row);
+ 				resolve(row);
+ 	  	});
+			db.close();
+	 	});
+
 
 	}
 
 	function showGetraenke()      // Zeige alle Produkte der Kategorie 2 (getränke)
 	{
-	  	let db = new sqlite3.Database('Kassensystem.db');
-	  	let query= db.each('SELECT * FROM (Produkte) WHERE Kategorie_ID = 2', (err,row)=> {
-	  		console.log( row);
+		 return new Promise( (resolve,rej)=> {
 
-	  	});
+			 let db = new sqlite3.Database('Kassensystem.db');
+ 	  	 db.all('SELECT * FROM (Produkte) WHERE Kategorie_ID = 2', (err,row)=> {
+ 	  		//console.log( row);
+ 				resolve(row);
+ 	  	});
+			db.close();
+	 	});
+
 
 	}
 
 	function showNachspeisen()      // Zeige alle Produkte der Kategorie 3 (Nachspeisen)
 	{
-			let db = new sqlite3.Database('Kassensystem.db');
-			let query= db.each('SELECT * FROM (Produkte) WHERE Kategorie_ID = 3', (err,row)=> {
-				console.log( row);
+		 return new Promise( (resolve,rej)=> {
 
-			});
+			 let db = new sqlite3.Database('Kassensystem.db');
+ 	  	 db.all('SELECT * FROM (Produkte) WHERE Kategorie_ID = 3', (err,row)=> {
+ 	  		//console.log( row);
+ 				resolve(row);
+ 	  	});
+			db.close();
+	 	});
+
 
 	}
 
 	function showCocktails()      // Zeige alle Produkte der Kategorie 4 (Cocktails)
 	{
-			let db = new sqlite3.Database('Kassensystem.db');
-			let query= db.each('SELECT * FROM (Produkte) WHERE Kategorie_ID = 4', (err,row)=> {
-				console.log( row);
+		 return new Promise( (resolve,rej)=> {
 
-			});
+			 let db = new sqlite3.Database('Kassensystem.db');
+ 	  	 db.all('SELECT * FROM (Produkte) WHERE Kategorie_ID = 4', (err,row)=> {
+ 	  		//console.log( row);
+ 				resolve(row);
+ 	  	});
+			db.close();
+	 	});
+
 
 	}
 
 	function showToGo()      // Zeige alle Produkte der Kategorie 5 (ToGo)
 	{
-			let db = new sqlite3.Database('Kassensystem.db');
-			let query= db.each('SELECT * FROM (Produkte) WHERE Kategorie_ID = 5', (err,row)=> {
-				console.log( row);
+		 return new Promise( (resolve,rej)=> {
 
-			});
+			 let db = new sqlite3.Database('Kassensystem.db');
+ 	  	 db.all('SELECT * FROM (Produkte) WHERE Kategorie_ID = 5', (err,row)=> {
+ 	  		//console.log( row);
+ 				resolve(row);
+ 	  	});
+			db.close();
+	 	});
+
 
 	}
 
@@ -98,10 +155,13 @@ const server = http.createServer( ( req, res ) => {
 
 if(req.url == '/getData')
 {
-	let objProd = readFromDatabase();
-	let str ='let data = ' + JSON.stringify( objProd );
-	res.write(str);
-	res.end();
+	readFromDatabase().then( resultsFromDatabase => {
+		let str ='let data = ' + JSON.stringify( resultsFromDatabase );
+//		console.log(str);							//Hier wird alles in der Serverconsole ausgegeben
+		res.write(str);
+		res.end();
+	})
+
 }
 else {
 	fs.readFile( filename , (err,content)=>{
@@ -111,31 +171,6 @@ else {
 			});
 }
 
-
-
-/*
-
-	let db = new sqlite3.Database('Kassensystem.db',sqlite3.OPEN_READWRITE, (err) =>{
-  	if (err) {
-  		console.error(err.message);
-  	}
-	let query1 = 'SELECT * FROM (Kategorien) WHERE ID = 1';
-
-
-
-	stmt = db.prepare( query1 ) ;
-
-	stmt.all( 1, (err, rows ) => {
-		if (err) {
-			console.error(err.message);
-		}
-
-			res.write( 'hallo' );
-		res.end();
-	} );
-
-});
-*/
 
 
 })
