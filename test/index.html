@@ -5,7 +5,8 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
   </head>
   <body>
-    <script src='js/function.js'></script>
+    <script src='http://localhost:8000/getData'></script>
+<!--    <script src='js/function.js'></script>    -->
     <h1>Kategorie</h1>
     <canvas id="cvs0" width=200px height=600px style="background-color:#F1F1F1 ;z-index:-1 ;border: 2px solid #000000;">
             </canvas>
@@ -17,7 +18,7 @@
     <br />
 <!--    <canvas id="cvs3" width=200px height=200px style="background-color:#F1F1F1 ;position:absolute; top:602; left:1110;z-index:-1 ;border: 2px solid #000000;">
 </canvas>-->
-    <button onclick= 'show1()' >Speisen</button>
+<!--    <button onclick= 'show1()' >Speisen</button>   //so nicht möglich -->
     <input type="button" value="Kategorie 1" id="Kat1" border="1px solid" name="Speisen" onclick"zeig1()">           <!--<button onclick="myFunction()">Click me</button>  -->
     <br />
     <br />
@@ -36,7 +37,16 @@
 
 <script>
 
+console.log(data);
+/*
+let cvs2 = document.getElementById("cvs2");
+ let ctx2=cvs2.getContext("2d");
+ ctx2.strokeStyle="#FF0000";
 
+ ctx2.moveTo(450,0);
+ ctx2.lineTo(0,450);
+ ctx2.stroke();
+*/
 
 </script>
 

@@ -1,6 +1,7 @@
 
 function show1()      // Zeige alle Produkte der Kategorie 1
 {
+  	let db = new sqlite3.Database('Kassensystem.db');
   	let query= db.each('SELECT * FROM (Kategorien) WHERE ID = 1', (err,row)=> {
   		console.log( row);
 
