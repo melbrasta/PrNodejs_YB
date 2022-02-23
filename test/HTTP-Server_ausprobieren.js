@@ -1,41 +1,30 @@
 const http = require('http');
 const url = require('url');
-const querystring = require('querystring');
+const qs = require('querystring');
 const sqlite3 = require('sqlite3');
 const fs = require('fs');
 
 const server = http.createServer( ( req, res ) => {
 
 	console.log( req.url );
+//	Speisen = [ showSpeisen()];
 
+			//hier Fehlt noch was....
+if(req.method =='POST')
+{
+	let body ='';
+	req.on('data',function (data)
+{
+	body += data;
+});
+req.on('end',function()
+{
+	var POST = qs.parse(body);
+	console.log(POST);
+});
 
-	function readFromDatabase()
-	{
+}
 
-		return new Promise( (resolve,rej)=> {
-
-			let promises = [];
-
-
-			promises.push( showSpeisen() );
-			promises.push( showGetraenke() );
-			promises.push( showNachspeisen() );
-			promises.push( showCocktails() );
-			promises.push( showToGo() );
-
-			Promise.all( promises ) .then( results => { resolve( results )})
-
-
-		});
-
-/*		let Speisen = [
-			showSpeisen()
-		];
-*/
-
-	//		Speisen : Speisen
-//		console.log(objProd[0]);
-	}
 
 
 /* Sicherheitskopie
@@ -153,8 +142,40 @@ function readFromDatabase()
 */
 
 
+
+	function readFromDatabase()
+	{
+
+		return new Promise( (resolve,rej)=> {
+
+			let promises = [];
+
+
+			promises.push( showSpeisen() );
+			promises.push( showGetraenke() );
+			promises.push( showNachspeisen() );
+			promises.push( showCocktails() );
+			promises.push( showToGo() );
+
+			Promise.all( promises ) .then( results => { resolve( results )})
+
+
+		});
+
+/*		let Speisen = [
+			showSpeisen()
+		];
+*/
+
+	//		Speisen : Speisen
+//		console.log(objProd[0]);
+	}
+
+
+
 if(req.url == '/getData')
 {
+
 	readFromDatabase().then( resultsFromDatabase => {
 		let str ='let data = ' + JSON.stringify( resultsFromDatabase );
 //		console.log(str);							//Hier wird alles in der Serverconsole ausgegeben
