@@ -7,7 +7,7 @@ Tabellenstrukturen:
 Kategorien:				|
 -------------------------
 ID					pk	|		-------------------------
-Kategoriename			|								|		
+Kategoriename			|								|
 						|								|
 -------------------------								|
 														|
@@ -56,10 +56,10 @@ CREATE TABLE "Produkte" (
 	"Name"	TEXT,
 	"Kategorie_ID"	INTEGER,
 	"Preis"	INTEGER NOT NULL,
-	"MwSt in%"	INTEGER NOT NULL DEFAULT 19,
+	"MwSt"	INTEGER NOT NULL DEFAULT 19,
 	FOREIGN KEY("Kategorie_ID") REFERENCES "Kategorien"("ID") ON UPDATE cascade,
 	PRIMARY KEY("ID" AUTOINCREMENT)
-);id
+);
 
 
 insert into Produkte (ID, Name, Kategorie_ID, Preis) values (1, 'Beef - Top Butt Aaa', 1, 13.54);
@@ -118,31 +118,19 @@ insert into Produkte (ID, Name, Kategorie_ID, Preis) values (50, 'Cardamon Groun
 
 
 
-CREATE TABLE "Bestellungen" (
-	"ID"	INTEGER,
-	"Datum"	INTEGER NOT NULL,
-	PRIMARY KEY("ID" AUTOINCREMENT)
-);
-
-
-insert into Bestellungen (Datum) values (21022022);
 
 
 
 
 
-
-
-CREATE TABLE "Bestelldetails" (
+CREATE TABLE "Rechnungsposition" (
 	"ID"	INTEGER,
 	"Produkt"	TEXT,
 	"Anzahl"	INTEGER,
 	"Stueckpreis"	INTEGER,
 	"MwSt"	INTEGER NOT NULL,
-	FOREIGN KEY("MwSt") REFERENCES "Produkte"("MwSt in%") ON UPDATE cascade,
+	FOREIGN KEY("MwSt") REFERENCES "Produkte"("MwSt") ON UPDATE cascade,
 	FOREIGN KEY("Stueckpreis") REFERENCES "Produkte"("Preis") ON UPDATE cascade,
 	FOREIGN KEY("Produkt") REFERENCES "Produkte"("Name") ON UPDATE cascade,
 	PRIMARY KEY("ID" AUTOINCREMENT)
 );
-
-
