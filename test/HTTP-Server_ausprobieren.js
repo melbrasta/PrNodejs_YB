@@ -151,20 +151,18 @@ function readFromDatabase()
 	}
 
 	//hier Fehlt noch was....
-if(req.method =='POST')
+if (req.method == 'POST')
 {
-let body ='';
-req.on('data',function (data)
+  let body = '';
+  req.on('data', function(data) {
+    body += data;
+  });
+  req.on('end', function() {
+    var POST = qs.parse(body);
+    console.log(POST);
+  });}
+else if (req.method === 'GET')
 {
-body += data;
-});
-req.on('end',function()
-{
-var POST = qs.parse(body);
-console.log(POST);
-});
-
-  } else if (req.method === 'GET') {
 		filename = req.url.substring(1);
 				//Ohne Substring wird hier die Html Datei gegeben
 		if (filename.length == 0)
@@ -185,7 +183,8 @@ if(req.url == '/getData')
 	})
 
 }
-else if (req.url === '/getSpeisen') {
+else if (req.url === '/getSpeisen')
+{
 		let speisen = new Promise((resolve, rej) => {
 
 				let db = new sqlite3.Database('Kassensystem.db');
@@ -197,10 +196,12 @@ else if (req.url === '/getSpeisen') {
 		speisen.then((rows) => {
 				res.write(JSON.stringify(rows))
 				res.end()
+				console.log(filename);
 		})
 
 }
-else if (req.url === '/getGetraenke') {
+else if (req.url === '/getGetraenke')
+{
 		let getraenke = new Promise((resolve, rej) => {
 
 				let db = new sqlite3.Database('Kassensystem.db');
@@ -215,7 +216,56 @@ else if (req.url === '/getGetraenke') {
 		})
 
 }
- else {
+else if (req.url === '/getNachspeisen')
+{
+		let nachspeisen = new Promise((resolve, rej) => {
+
+				let db = new sqlite3.Database('Kassensystem.db');
+				db.all('SELECT * FROM (Produkte) WHERE Kategorie_ID = 3', (err, row) => {
+						resolve(row);
+				});
+				db.close();
+		});
+		nachspeisen.then((rows) => {
+				res.write(JSON.stringify(rows))
+				res.end()
+		})
+
+}
+else if (req.url === '/getCocktails')
+{
+		let cocktails = new Promise((resolve, rej) => {
+
+				let db = new sqlite3.Database('Kassensystem.db');
+				db.all('SELECT * FROM (Produkte) WHERE Kategorie_ID = 4', (err, row) => {
+						resolve(row);
+				});
+				db.close();
+		});
+		cocktails.then((rows) => {
+				res.write(JSON.stringify(rows))
+				res.end()
+		})
+
+}
+else if (req.url === '/getToGo')
+{
+		let togo = new Promise((resolve, rej) => {
+
+				let db = new sqlite3.Database('Kassensystem.db');
+				db.all('SELECT * FROM (Produkte) WHERE Kategorie_ID = 5', (err, row) => {
+						resolve(row);
+				});
+				db.close();
+		});
+		togo.then((rows) => {
+				res.write(JSON.stringify(rows))
+				res.end()
+		})
+
+}
+ else
+ {
 		fs.readFile(filename, (err, content) => {
 				if (err) throw err;
 				res.write(content.toString());

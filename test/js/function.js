@@ -7,14 +7,21 @@ function showSpeisen()
                 let categories = document.getElementById("categories");
                 clearDiv(categories)
                 speisen.forEach((speise) => {
-                    categories.innerHTML += createSpeiseButton(speise.ID, speise.Name)
+                    categories.innerHTML += createSpeiseButton(speise.Name, speise.Preis)
                 })
             })
         })
 }
 
-function showGetraenke()
-{      // Zeige alle Produkte der Kategorie 2 (getränke)
+function createSpeiseButton(name, preis)
+{
+    return `<button >${name}, ${preis} €</button><br/>`
+}
+
+
+
+function showGetraenke()   // Zeige alle Produkte der Kategorie 2 (getränke)
+{
 fetch('/getGetraenke')
     .then(function (resp) {
         // Mache aus der Serverantwort Buttons
@@ -22,56 +29,77 @@ fetch('/getGetraenke')
             let categories = document.getElementById("categories");
             clearDiv(categories)
             getraenke.forEach((getraenk) => {
-                categories.innerHTML += createGetraenkeButton(getraenk.ID, getraenk.Name)
+                categories.innerHTML += createGetraenkeButton( getraenk.Name, getraenk.Preis)
             })
         })
     })
 }
 
+function createGetraenkeButton(name, preis)
+{
+    return `<button >${name}, ${preis} €</button><br/>`
+  }
+
+
 function showNachspeisen()      // Zeige alle Produkte der Kategorie 3 (Nachspeisen)
 {
-   return new Promise( (resolve,rej)=> {
+  fetch('/getNachspeisen')
+      .then(function (resp) {
+          // Mache aus der Serverantwort Buttons
+          resp.json().then((nachspeisen) => {
+              let categories = document.getElementById("categories");
+              clearDiv(categories)
+              nachspeisen.forEach((nachspeise) => {
+                  categories.innerHTML += createNachspeisenButton( nachspeise.Name, nachspeise.Preis)
+              })
+          })
+      })
+  }
 
-     let db = new sqlite3.Database('Kassensystem.db');
-     db.all('SELECT * FROM (Produkte) WHERE Kategorie_ID = 3', (err,row)=> {
-      //console.log( row);
-      resolve(row);
-    });
-    db.close();
-  });
-
-
-}
+  function createNachspeisenButton(name, preis)
+  {
+      return `<button >${name}, ${preis} €</button><br/>`
+    }
 
 function showCocktails()      // Zeige alle Produkte der Kategorie 4 (Cocktails)
 {
-   return new Promise( (resolve,rej)=> {
+  fetch('/getCocktails')
+      .then(function (resp) {
+          // Mache aus der Serverantwort Buttons
+          resp.json().then((cocktails) => {
+              let categories = document.getElementById("categories");
+              clearDiv(categories)
+              cocktails.forEach((cocktail) => {
+                  categories.innerHTML += createCocktailsButton( cocktail.Name, cocktail.Preis)
+              })
+          })
+      })
+  }
 
-     let db = new sqlite3.Database('Kassensystem.db');
-     db.all('SELECT * FROM (Produkte) WHERE Kategorie_ID = 4', (err,row)=> {
-      //console.log( row);
-      resolve(row);
-    });
-    db.close();
-  });
-
-
-}
+function createCocktailsButton(name, preis)
+  {
+      return `<button >${name}, ${preis} €</button><br/>`
+    }
 
 function showToGo()      // Zeige alle Produkte der Kategorie 5 (ToGo)
 {
-   return new Promise( (resolve,rej)=> {
+  fetch('/getToGo')
+      .then(function (resp) {
+          // Mache aus der Serverantwort Buttons
+          resp.json().then((togo) => {
+              let categories = document.getElementById("categories");
+              clearDiv(categories)
+              togo.forEach((Togo) => {
+                  categories.innerHTML += createCocktailsButton( Togo.Name, Togo.Preis)
+              })
+          })
+      })
+  }
 
-     let db = new sqlite3.Database('Kassensystem.db');
-     db.all('SELECT * FROM (Produkte) WHERE Kategorie_ID = 5', (err,row)=> {
-      //console.log( row);
-      resolve(row);
-    });
-    db.close();
-  });
-
-
-}
+  function createToGoButton(name, preis)
+    {
+        return `<button >${name}, ${preis} €</button><br/>`
+      }
 
 // function fuegeWarenKorbHinzu(kategorieId, produktId, produktName) {
 //     warenkorb.push({
@@ -90,20 +118,15 @@ function showToGo()      // Zeige alle Produkte der Kategorie 5 (ToGo)
 // }
 
 
-function createSpeiseButton(id, name) {
-    return `<button >${name}</button><br/>`
-}
 
-function createGetraenkeButton(id, name) {
-    return `<button >${name}</button><br/>`
-  }
-
-function clearDiv(div) {
+function clearDiv(div)
+{
     div.innerHTML = ""
 }
 
 
-function bestellen() {
+function bestellen()
+ {
     const options = {
         method: 'POST',
         body: JSON.stringify(warenkorb)
