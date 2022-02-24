@@ -3,6 +3,8 @@ const url = require('url');
 const qs = require('querystring');
 const sqlite3 = require('sqlite3');
 const fs = require('fs');
+const fun  = require('./js/function.js');
+
 
 const server = http.createServer( ( req, res ) => {
 
@@ -106,7 +108,7 @@ function readFromDatabase()
 
 	}
 
-
+//fun.banane()
 
 
 /*
@@ -249,6 +251,22 @@ else if (req.url === '/getCocktails')
 
 }
 else if (req.url === '/getToGo')
+{
+		let togo = new Promise((resolve, rej) => {
+
+				let db = new sqlite3.Database('Kassensystem.db');
+				db.all('SELECT * FROM (Produkte) WHERE Kategorie_ID = 5', (err, row) => {
+						resolve(row);
+				});
+				db.close();
+		});
+		togo.then((rows) => {
+				res.write(JSON.stringify(rows))
+				res.end()
+		})
+
+}
+else if (req.url === '/doBestellung')
 {
 		let togo = new Promise((resolve, rej) => {
 

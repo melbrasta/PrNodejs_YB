@@ -13,10 +13,7 @@ function showSpeisen()
         })
 }
 
-function createSpeiseButton(name, preis)
-{
-    return `<button >${name}, ${preis} €</button><br/>`
-}
+
 
 
 
@@ -101,35 +98,49 @@ function showToGo()      // Zeige alle Produkte der Kategorie 5 (ToGo)
         return `<button >${name}, ${preis} €</button><br/>`
       }
 
-// function fuegeWarenKorbHinzu(kategorieId, produktId, produktName) {
-//     warenkorb.push({
-//         kategorieId: kategorieId,
-//         produktId: produktId,
-//         produktName: produktName,
-//     });
-//     // Wir holen uns ein div (ueber die ID) und schreiben in sein "innerHTML"
-//     // (alles was im <div> ... </div> drin steht) neue Eintraege
-//     let warenkorbDiv = document.getElementById("warenkorb");
-//     clearDiv(warenkorbDiv);
-//     warenkorb.forEach((produkt) => {
-//         // Erstelle eine Liste mit Warenkorbeintraegen
-//         warenkorbDiv.innerHTML += `<li>${produkt.produktName}</li>`
-//     })
-// }
+
+      function createSpeiseButton( name, preis)
+      {
+        return `<button onclick="fuegeWarenKorbHinzu(1, '${name}',${preis})">${name},${preis} €</button><br/>`
+      }
+
+
+var warenkorb = [];
+
+function fuegeWarenKorbHinzu(anzahl, produktName, preis)
+{
+    warenkorb.push({
+        anzahl : anzahl,
+        produktName: produktName,
+        preis : preis,
+
+    });
+    // Wir holen uns ein div (ueber die ID) und schreiben in sein "innerHTML"
+    // (alles was im <div> ... </div> drin steht) neue Eintraege
+    let warenkorbDiv = document.getElementById("rechnung");
+    clearDiv(warenkorbDiv);
+    warenkorb.forEach((produkt) => {
+        // Erstelle eine Liste mit Warenkorbeintraegen
+        console.log(produkt);
+        warenkorbDiv.innerHTML += `<li>${produkt.anzahl}x ${produkt.produktName} ------ ${produkt.preis} €</li>`
+    })
+}
+
+
+// Einen Warenkorb an den Server senden (mit einem POST-Request)
+
+function bestellen()
+{
+    const options = {
+        method: 'POST',
+        body: JSON.stringify(warenkorb)
+    };
+    fetch('/doBestellung', options);
+}
 
 
 
 function clearDiv(div)
 {
     div.innerHTML = ""
-}
-
-
-function bestellen()
- {
-    const options = {
-        method: 'POST',
-        body: JSON.stringify(warenkorb)
-    };
-    fetch('/doBestellung', options);
 }
