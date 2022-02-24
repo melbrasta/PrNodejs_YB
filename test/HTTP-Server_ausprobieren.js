@@ -9,26 +9,6 @@ const fun  = require('./js/function.js');
 const server = http.createServer( ( req, res ) => {
 
 	console.log( req.url );
-//	Speisen = [ showSpeisen()];
-
-
-
-/* Sicherheitskopie
-function readFromDatabase()
-{
-	let objProd = [
-		//  {isselected: false}, {isselected: false},				//hier muss die Ausgabe der Datenbankanfrage rein
-		showSpeisen(),
-		showGetraenke(),
-		showNachspeisen(),
-		showCocktails(),
-		showToGo()
-	];
-	return objProd;
-//		console.log(objProd[0]);
-}
-*/
-
 
 
 
@@ -108,8 +88,6 @@ function readFromDatabase()
 
 	}
 
-//fun.banane()
-
 
 /*
 	fs.readFile( req.url.substring(1), (err,content)=>{
@@ -152,17 +130,77 @@ function readFromDatabase()
 //		console.log(objProd[0]);
 	}
 
+	function getStueckPreis(buchung)
+	 {
+			// TODO: Raus lösen, sodass man es nicht immer definieren muss
+			let db = new sqlite3.Database('Kassensystem.db');
+			let stueckpreis = new Promise((resolve, rej) => {
+					db.all(`SELECT Preis
+									FROM (Produkte)
+									WHERE ID = ${buchung.produktId}`, (err, row) => {
+							resolve(row);
+					});
+			});
+			db.close();
+			return stueckpreis;
+	}
+
+
 	//hier Fehlt noch was....
-if (req.method == 'POST')
-{
-  let body = '';
-  req.on('data', function(data) {
-    body += data;
-  });
-  req.on('end', function() {
-    var POST = qs.parse(body);
-    console.log(POST);
-  });}
+	if (req.method === 'POST')
+	{
+			console.log(req.method);
+			let body = String();
+			console.log(data);
+			console.log("Das ist der Body: " + body);
+			req.on('data', function (data) {						//klappt noch nicht. data scheint an dieser Stelle leer zu sein 
+					body += data.toString;
+
+			});
+			req.on("end", () =>
+			 {
+					// Baue aus dem String wieder ein Objekt
+						var POST = qs.parse(body);
+							console.log(POST);
+							console.log(body);
+					let bestellungen = JSON.parse(body);
+
+					// Schreibe Bestellung in DB
+					/**
+					 * [{ name: bla}, {name: bla}, {name: bla}] =>
+					 * [{ name: bla, anzahl: 3}]
+					 * -> Ist eine neue Funktion die noch geschrieben werden muss
+					 */
+					bestellungen = summiereEinzelprodukte(bestellungen)
+					// TODO: Es wird noch nicht unterschieden, was genau in einer Rechnung ist, also braucht man noch Rechnungsnummern, diese muessen auch in der Datenbank stehen (neue Spalte)
+					bestellungen.forEach((bestellung) => {
+
+							let stueckPreisProm = getStueckPreis(bestellung)
+							let mehrwertSteuerProm = getMehrwertSteuer(bestellung)
+							stueckPreisProm.then(function (stueckPreis) {
+									mehrwertSteuerProm.then(function (mehrwertSteuer) {
+											//FIXME: mehrwertSteuer: Wird nicht verwendet weil komisch gerade
+											//FIXME: In der Datenbank und sonst wo immer nur Namen und keine Leer- und Sonderzeichen verwenden, macht nur aua!
+											console.log("Start")
+											console.log(stueckPreis[0].Preis)
+											console.log(`INSERT INTO Bestelldetails (Produkt, Anzahl, Stueckpreis, MwSt)
+																	 VALUES ('${bestellung.produktName}', 1, ${stueckPreis[0].Preis},
+																					 19)`)
+											// TODO: Es wird noch nicht geprueft, ob ein Produkt mehrfach vorkommt --- zusammenrechen!
+											let statement = `INSERT INTO Bestelldetails (Produkt, Anzahl, Stueckpreis, MwSt)
+																			 VALUES ('${bestellung.produktName}', 1, ${stueckPreis[0].Preis},
+																							 19)`
+											runInsertStatement(statement).then(() => {
+													console.log("Ende")
+											})
+
+									});
+
+							})
+
+					})
+			})
+		}
 else if (req.method === 'GET')
 {
 		filename = req.url.substring(1);
@@ -198,7 +236,7 @@ else if (req.url === '/getSpeisen')
 		speisen.then((rows) => {
 				res.write(JSON.stringify(rows))
 				res.end()
-				console.log(filename);
+	//			console.log(filename);
 		})
 
 }
@@ -266,22 +304,7 @@ else if (req.url === '/getToGo')
 		})
 
 }
-else if (req.url === '/doBestellung')
-{
-		let togo = new Promise((resolve, rej) => {
 
-				let db = new sqlite3.Database('Kassensystem.db');
-				db.all('SELECT * FROM (Produkte) WHERE Kategorie_ID = 5', (err, row) => {
-						resolve(row);
-				});
-				db.close();
-		});
-		togo.then((rows) => {
-				res.write(JSON.stringify(rows))
-				res.end()
-		})
-
-}
  else
  {
 		fs.readFile(filename, (err, content) => {
