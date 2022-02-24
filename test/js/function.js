@@ -135,7 +135,7 @@ function bestellen()
         method: 'POST',
         body: JSON.stringify(warenkorb)
     };
-  //  fetch('/doBestellung', options);
+    fetch('/doBestellung', options);
 }
 
 

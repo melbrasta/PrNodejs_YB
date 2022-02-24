@@ -147,58 +147,58 @@ const server = http.createServer( ( req, res ) => {
 
 
 	//hier Fehlt noch was....
-	if (req.method === 'POST')
+	if (req.method === 'POST' && req.url =="/doBestellung")
 	{
 			console.log(req.method);
 			let body = String();
-			console.log(data);
+
 			console.log("Das ist der Body: " + body);
-			req.on('data', function (data) {						//klappt noch nicht. data scheint an dieser Stelle leer zu sein 
-					body += data.toString;
+			req.on('data', function (data) {						//klappt noch nicht. data scheint an dieser Stelle leer zu sein
+					body += data;
+								console.log(body);
 
 			});
 			req.on("end", () =>
 			 {
 					// Baue aus dem String wieder ein Objekt
-						var POST = qs.parse(body);
-							console.log(POST);
-							console.log(body);
+
 					let bestellungen = JSON.parse(body);
 
-					// Schreibe Bestellung in DB
-					/**
-					 * [{ name: bla}, {name: bla}, {name: bla}] =>
-					 * [{ name: bla, anzahl: 3}]
-					 * -> Ist eine neue Funktion die noch geschrieben werden muss
-					 */
-					bestellungen = summiereEinzelprodukte(bestellungen)
-					// TODO: Es wird noch nicht unterschieden, was genau in einer Rechnung ist, also braucht man noch Rechnungsnummern, diese muessen auch in der Datenbank stehen (neue Spalte)
-					bestellungen.forEach((bestellung) => {
-
-							let stueckPreisProm = getStueckPreis(bestellung)
-							let mehrwertSteuerProm = getMehrwertSteuer(bestellung)
-							stueckPreisProm.then(function (stueckPreis) {
-									mehrwertSteuerProm.then(function (mehrwertSteuer) {
-											//FIXME: mehrwertSteuer: Wird nicht verwendet weil komisch gerade
-											//FIXME: In der Datenbank und sonst wo immer nur Namen und keine Leer- und Sonderzeichen verwenden, macht nur aua!
-											console.log("Start")
-											console.log(stueckPreis[0].Preis)
-											console.log(`INSERT INTO Bestelldetails (Produkt, Anzahl, Stueckpreis, MwSt)
-																	 VALUES ('${bestellung.produktName}', 1, ${stueckPreis[0].Preis},
-																					 19)`)
-											// TODO: Es wird noch nicht geprueft, ob ein Produkt mehrfach vorkommt --- zusammenrechen!
-											let statement = `INSERT INTO Bestelldetails (Produkt, Anzahl, Stueckpreis, MwSt)
-																			 VALUES ('${bestellung.produktName}', 1, ${stueckPreis[0].Preis},
-																							 19)`
-											runInsertStatement(statement).then(() => {
-													console.log("Ende")
-											})
-
-									});
-
-							})
-
-					})
+					// // Schreibe Bestellung in DB
+					// /**
+					//  * [{ name: bla}, {name: bla}, {name: bla}] =>
+					//  * [{ name: bla, anzahl: 3}]
+					//  * -> Ist eine neue Funktion die noch geschrieben werden muss
+					//  */
+					// bestellungen = summiereEinzelprodukte(bestellungen)
+					// // TODO: Es wird noch nicht unterschieden, was genau in einer Rechnung ist, also braucht man noch Rechnungsnummern, diese muessen auch in der Datenbank stehen (neue Spalte)
+					// bestellungen.forEach((bestellung) =>
+					// {
+					//
+					// 		let stueckPreisProm = getStueckPreis(bestellung)
+					// 		let mehrwertSteuerProm = getMehrwertSteuer(bestellung)
+					// 		stueckPreisProm.then(function (stueckPreis) {
+					// 				mehrwertSteuerProm.then(function (mehrwertSteuer) {
+					// 						//FIXME: mehrwertSteuer: Wird nicht verwendet weil komisch gerade
+					// 						//FIXME: In der Datenbank und sonst wo immer nur Namen und keine Leer- und Sonderzeichen verwenden, macht nur aua!
+					// 						console.log("Start")
+					// 						console.log(stueckPreis[0].Preis)
+					// 						console.log(`INSERT INTO Bestelldetails (Produkt, Anzahl, Stueckpreis, MwSt)
+					// 												 VALUES ('${bestellung.produktName}', 1, ${stueckPreis[0].Preis},
+					// 																 19)`)
+					// 						// TODO: Es wird noch nicht geprueft, ob ein Produkt mehrfach vorkommt --- zusammenrechen!
+					// 						let statement = `INSERT INTO Bestelldetails (Produkt, Anzahl, Stueckpreis, MwSt)
+					// 														 VALUES ('${bestellung.produktName}', 1, ${stueckPreis[0].Preis},
+					// 																		 19)`
+					// 						runInsertStatement(statement).then(() => {
+					// 								console.log("Ende")
+					// 						})
+					//
+					// 				});
+					//
+					// 		})
+					//
+					// })
 			})
 		}
 else if (req.method === 'GET')
