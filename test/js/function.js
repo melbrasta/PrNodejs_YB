@@ -14,7 +14,10 @@ function showSpeisen()
 }
 
 
-
+function createSpeiseButton( name, preis)
+{
+  return `<button onclick="fuegeWarenKorbHinzu(1, '${name}',${preis})">${name},${preis} €</button><br/>`
+}
 
 
 function showGetraenke()   // Zeige alle Produkte der Kategorie 2 (getränke)
@@ -99,30 +102,26 @@ function showToGo()      // Zeige alle Produkte der Kategorie 5 (ToGo)
       }
 
 
-      function createSpeiseButton( name, preis)
-      {
-        return `<button onclick="fuegeWarenKorbHinzu(1, '${name}',${preis})">${name},${preis} €</button><br/>`
-      }
-
 
 var warenkorb = [];
 
-function fuegeWarenKorbHinzu(anzahl, produktName, preis)
+function fuegeWarenKorbHinzu(anzahl, produktName, preis, MwSt)
 {
     warenkorb.push({
         anzahl : anzahl,
         produktName: produktName,
         preis : preis,
+        MwSt : MwSt,
 
     });
     // Wir holen uns ein div (ueber die ID) und schreiben in sein "innerHTML"
     // (alles was im <div> ... </div> drin steht) neue Eintraege
     let warenkorbDiv = document.getElementById("rechnung");
     clearDiv(warenkorbDiv);
-    warenkorb.forEach((produkt) => {
+    warenkorb.forEach((Warenkorb) => {
         // Erstelle eine Liste mit Warenkorbeintraegen
-        console.log(produkt);
-        warenkorbDiv.innerHTML += `<li>${produkt.anzahl}x ${produkt.produktName} ------ ${produkt.preis} €</li>`
+        console.log(Warenkorb);
+        warenkorbDiv.innerHTML += `<ul><li>${Warenkorb.anzahl}x ${Warenkorb.produktName} ------ ${Warenkorb.preis} € (inkl ${Warenkorb.MwSt})</li></ul>`
     })
 }
 

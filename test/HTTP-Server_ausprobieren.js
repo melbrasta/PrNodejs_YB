@@ -121,13 +121,6 @@ const server = http.createServer( ( req, res ) => {
 
 		});
 
-/*		let Speisen = [
-			showSpeisen()
-		];
-*/
-
-	//		Speisen : Speisen
-//		console.log(objProd[0]);
 	}
 
 	function getStueckPreis(buchung)
@@ -146,14 +139,52 @@ const server = http.createServer( ( req, res ) => {
 	}
 
 
+	function getMehrwertSteuer(buchung)
+	{
+			// TODO: Raus lösen, sodass man es nicht immer definieren muss
+			let db = new sqlite3.Database('Kassensystem.db');
+			let MwSt = new Promise((resolve, rej) => {
+					db.all(`SELECT MwSt
+									FROM (Produkte)
+									WHERE ID = ${buchung.produktId}`, (err, row) => {
+							resolve(row);
+					});
+			});
+			db.close();
+			return MwSt;
+	}
+
+	/**
+	 * Macht ein insert-Statement auf der Datenbank
+	 * Ist asynchron (async function), sodass man auf die Datenbank-Anfrage warten kann (await)
+	 * @param sql Das statement
+	 * @returns {Promise<void>}
+	 */
+	async function runInsertStatement(sql) {
+			let db = new sqlite3.Database('Kassensystem.db');
+			await db.run(sql, function (err) {
+					if (err) {
+							return console.log("FEHLER!!!!: " + err.message);
+					} else {
+							return console.log("Alles gut :)")
+					}
+
+			});
+			console.log("Ende")
+			db.close();
+	}
+
+
+
+
 	//hier Fehlt noch was....
-	if (req.method === 'POST' && req.url =="/doBestellung")
+	if (req.method === 'POST' && req.url =='/doBestellung')
 	{
 			console.log(req.method);
 			let body = String();
 
 			console.log("Das ist der Body: " + body);
-			req.on('data', function (data) {						//klappt noch nicht. data scheint an dieser Stelle leer zu sein
+			req.on('data', function (data) {
 					body += data;
 								console.log(body);
 
@@ -164,41 +195,40 @@ const server = http.createServer( ( req, res ) => {
 
 					let bestellungen = JSON.parse(body);
 
-					// // Schreibe Bestellung in DB
-					// /**
-					//  * [{ name: bla}, {name: bla}, {name: bla}] =>
-					//  * [{ name: bla, anzahl: 3}]
-					//  * -> Ist eine neue Funktion die noch geschrieben werden muss
-					//  */
-					// bestellungen = summiereEinzelprodukte(bestellungen)
-					// // TODO: Es wird noch nicht unterschieden, was genau in einer Rechnung ist, also braucht man noch Rechnungsnummern, diese muessen auch in der Datenbank stehen (neue Spalte)
-					// bestellungen.forEach((bestellung) =>
-					// {
-					//
-					// 		let stueckPreisProm = getStueckPreis(bestellung)
-					// 		let mehrwertSteuerProm = getMehrwertSteuer(bestellung)
-					// 		stueckPreisProm.then(function (stueckPreis) {
-					// 				mehrwertSteuerProm.then(function (mehrwertSteuer) {
-					// 						//FIXME: mehrwertSteuer: Wird nicht verwendet weil komisch gerade
-					// 						//FIXME: In der Datenbank und sonst wo immer nur Namen und keine Leer- und Sonderzeichen verwenden, macht nur aua!
-					// 						console.log("Start")
-					// 						console.log(stueckPreis[0].Preis)
-					// 						console.log(`INSERT INTO Bestelldetails (Produkt, Anzahl, Stueckpreis, MwSt)
-					// 												 VALUES ('${bestellung.produktName}', 1, ${stueckPreis[0].Preis},
-					// 																 19)`)
-					// 						// TODO: Es wird noch nicht geprueft, ob ein Produkt mehrfach vorkommt --- zusammenrechen!
-					// 						let statement = `INSERT INTO Bestelldetails (Produkt, Anzahl, Stueckpreis, MwSt)
-					// 														 VALUES ('${bestellung.produktName}', 1, ${stueckPreis[0].Preis},
-					// 																		 19)`
-					// 						runInsertStatement(statement).then(() => {
-					// 								console.log("Ende")
-					// 						})
-					//
-					// 				});
-					//
-					// 		})
-					//
-					// })
+					// Schreibe Bestellung in DB
+					/**
+					 * [{ name: bla}, {name: bla}, {name: bla}] =>
+					 * [{ name: bla, anzahl: 3}]
+					 * -> Ist eine neue Funktion die noch geschrieben werden muss
+					 */
+//					bestellungen = summiereEinzelprodukte(bestellungen)
+					// TODO: Es wird noch nicht unterschieden, was genau in einer Rechnung ist, also braucht man noch Rechnungsnummern, diese muessen auch in der Datenbank stehen (neue Spalte)
+					bestellungen.forEach((bestellung) =>
+					{
+
+							let stueckPreisProm = getStueckPreis(bestellung);
+							let mehrwertSteuerProm = getMehrwertSteuer(bestellung);
+							stueckPreisProm.then(function (stueckPreis) {
+									mehrwertSteuerProm.then(function (mehrwertSteuer) {
+											//FIXME: mehrwertSteuer: Wird nicht verwendet weil komisch gerade
+											//FIXME: In der Datenbank und sonst wo immer nur Namen und keine Leer- und Sonderzeichen verwenden, macht nur aua!
+											console.log("Start")
+//											console.log(stueckPreis[0].Preis)
+											// console.log(`INSERT INTO Rechnungsposition (Produkt, Anzahl, Stueckpreis, MwSt)
+											// 						 VALUES ('${bestellung.produktName}', 1, ${bestellung.Preis},
+											// 										 19)`)
+											// TODO: Es wird noch nicht geprueft, ob ein Produkt mehrfach vorkommt --- zusammenrechen!
+											let statement = `INSERT INTO Rechnungsposition (Produkt, Anzahl, Stueckpreis, MwSt)
+																			 VALUES ('${bestellung.produktName}', 1, ${bestellung.Preis},${bestellung.MwSt})`
+											runInsertStatement(statement).then(() => {
+													console.log("Ende")
+											})
+
+									});
+
+							})
+
+					})
 			})
 		}
 else if (req.method === 'GET')
