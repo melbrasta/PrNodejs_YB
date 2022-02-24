@@ -1,4 +1,5 @@
-function showSpeisen() {
+function showSpeisen()
+{
     fetch('/getSpeisen')
         .then(function (resp) {
             // Mache aus der Serverantwort Buttons
@@ -12,19 +13,19 @@ function showSpeisen() {
         })
 }
 
-function showGetraenke()      // Zeige alle Produkte der Kategorie 2 (getränke)
-{
-   return new Promise( (resolve,rej)=> {
-
-     let db = new sqlite3.Database('Kassensystem.db');
-     db.all('SELECT * FROM (Produkte) WHERE Kategorie_ID = 2', (err,row)=> {
-      //console.log( row);
-      resolve(row);
-    });
-    db.close();
-  });
-
-
+function showGetraenke()
+{      // Zeige alle Produkte der Kategorie 2 (getränke)
+fetch('/getGetraenke')
+    .then(function (resp) {
+        // Mache aus der Serverantwort Buttons
+        resp.json().then((getraenke) => {
+            let categories = document.getElementById("categories");
+            clearDiv(categories)
+            getraenke.forEach((getraenk) => {
+                categories.innerHTML += createGetraenkeButton(getraenk.ID, getraenk.Name)
+            })
+        })
+    })
 }
 
 function showNachspeisen()      // Zeige alle Produkte der Kategorie 3 (Nachspeisen)
@@ -92,6 +93,10 @@ function showToGo()      // Zeige alle Produkte der Kategorie 5 (ToGo)
 function createSpeiseButton(id, name) {
     return `<button >${name}</button><br/>`
 }
+
+function createGetraenkeButton(id, name) {
+    return `<button >${name}</button><br/>`
+  }
 
 function clearDiv(div) {
     div.innerHTML = ""

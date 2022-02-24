@@ -198,7 +198,24 @@ else if (req.url === '/getSpeisen') {
 				res.write(JSON.stringify(rows))
 				res.end()
 		})
-} else {
+
+}
+else if (req.url === '/getGetraenke') {
+		let getraenke = new Promise((resolve, rej) => {
+
+				let db = new sqlite3.Database('Kassensystem.db');
+				db.all('SELECT * FROM (Produkte) WHERE Kategorie_ID = 2', (err, row) => {
+						resolve(row);
+				});
+				db.close();
+		});
+		getraenke.then((rows) => {
+				res.write(JSON.stringify(rows))
+				res.end()
+		})
+
+}
+ else {
 		fs.readFile(filename, (err, content) => {
 				if (err) throw err;
 				res.write(content.toString());
