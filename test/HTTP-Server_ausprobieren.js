@@ -9,22 +9,6 @@ const server = http.createServer( ( req, res ) => {
 	console.log( req.url );
 //	Speisen = [ showSpeisen()];
 
-			//hier Fehlt noch was....
-if(req.method =='POST')
-{
-	let body ='';
-	req.on('data',function (data)
-{
-	body += data;
-});
-req.on('end',function()
-{
-	var POST = qs.parse(body);
-	console.log(POST);
-});
-
-}
-
 
 
 /* Sicherheitskopie
@@ -123,12 +107,7 @@ function readFromDatabase()
 	}
 
 
-	filename = req.url.substring(1);
-			//Ohne Substring wird hier die Html Datei gegeben
-	if (filename.length == 0)
-	{
-		filename = 'index.html';
-	}
+
 
 /*
 	fs.readFile( req.url.substring(1), (err,content)=>{
@@ -171,6 +150,28 @@ function readFromDatabase()
 //		console.log(objProd[0]);
 	}
 
+	//hier Fehlt noch was....
+if(req.method =='POST')
+{
+let body ='';
+req.on('data',function (data)
+{
+body += data;
+});
+req.on('end',function()
+{
+var POST = qs.parse(body);
+console.log(POST);
+});
+
+  } else if (req.method === 'GET') {
+		filename = req.url.substring(1);
+				//Ohne Substring wird hier die Html Datei gegeben
+		if (filename.length == 0)
+		{
+			filename = 'index.html';
+		}
+
 
 
 if(req.url == '/getData')
@@ -184,15 +185,29 @@ if(req.url == '/getData')
 	})
 
 }
-else {
-	fs.readFile( filename , (err,content)=>{
-		if (err) throw err;
-				res.write( content.toString() );
+else if (req.url === '/getSpeisen') {
+		let speisen = new Promise((resolve, rej) => {
+
+				let db = new sqlite3.Database('Kassensystem.db');
+				db.all('SELECT * FROM (Produkte) WHERE Kategorie_ID = 1', (err, row) => {
+						resolve(row);
+				});
+				db.close();
+		});
+		speisen.then((rows) => {
+				res.write(JSON.stringify(rows))
+				res.end()
+		})
+} else {
+		fs.readFile(filename, (err, content) => {
+				if (err) throw err;
+				res.write(content.toString());
 				res.end();
 			});
 }
 
 
 
-})
+}
+});
 server.listen( 8000 );

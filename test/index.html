@@ -5,41 +5,73 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
   </head>
   <body>
+    <script scr='style.css'></script>
     <script src='http://localhost:8000/getData'></script>
-<!--    <script src='js/function.js'></script>    -->
+   <script src='js/function.js'></script>
     <h1>Kategorie</h1>
-    <canvas id="cvs0" width=200px height=600px style="background-color:#F1F1F1 ;z-index:-1 ;border: 2px solid #000000;">
-            </canvas>
-    <canvas id="cvs1" width=900px height=600px style="background-color:#F1F1F1 ;z-index:-1 ;border: 2px solid #000000;">
-        </canvas>
-    <canvas id="cvs2" width=200px height=600px style="background-color:#F1F1F1 ;z-index:-1 ;border: 2px solid #000000;">
-            </canvas>
+        <div class= "canvas0" id="categories">
+    <!-- <canvas id="cvs0" width=200px height=600px style="background-color:#F1F1F1 ;border: 2px solid #000000;">
+            </canvas> -->
+        </div>
+            <div class= "canvas1" id="warenkorb">
+    <!-- <canvas id="cvs1" width=900px height=600px style="background-color:#F1F1F1 ;border: 2px solid #000000;">
+        </canvas> -->
+          </div>
+            <div class= "canvas2" id="rechnung">
+    <!-- <canvas id="cvs2" width=200px height=600px style="background-color:#F1F1F1 ;border: 2px solid #000000;">
+            </canvas> -->
+                </div>
     <br />
     <br />
+
+
+
+
+
+
 <!--    <canvas id="cvs3" width=200px height=200px style="background-color:#F1F1F1 ;position:absolute; top:602; left:1110;z-index:-1 ;border: 2px solid #000000;">
 </canvas>-->
 <!--    <button onclick= 'show1()' >Speisen</button>   //so nicht möglich -->
 <form method='post'>
-    <input type="button" value="Kategorie 1" id="Kat1" border="1px solid" name="Speisen" onclick"zeig1()">           <!--<button onclick="myFunction()">Click me</button>  -->
-    <br />
-    <br />
-    <input type="button" value="Kategorie 2" id="Kat2" border="1px solid" name="Getraenke">
-    <br />
-    <br />
-    <input type="button" value="Kategorie 3" id="Kat3" border="1px solid" name="Nachspeisen">
-    <br />
-    <br />
-    <input type="button" value="Kategorie 4" id="Kat4" border="1px solid" name="Cocktails">
-    <br />
-    <br />
+    <input border="1px solid" id="Kat1" name="Speisen" onclick="showSpeisen()" type="button" value="Kategorie 1">
+    <!--<button onclick="myFunction()">Click me</button>  -->
+    <br/>
+    <br/>
+    <input border="1px solid" id="Kat2" name="Getraenke" type="button" value="Kategorie 2">
+    <br/>
+    <br/>
+    <input border="1px solid" id="Kat3" name="Nachspeisen" type="button" value="Kategorie 3">
+    <br/>
+    <br/>
+    <input border="1px solid" id="Kat4" name="Cocktails" type="button" value="Kategorie 4">
+    <br/>
+    <br/>
     <input type="submit" value="Abbrechen">
-    <input type="submit" value="Bestellen">
+    <input onclick="bestellen()" type="button" value="Bestellen">
     <input type="submit" value="Rechnung Drucken">
 
 </form>
 <script>
 
 console.log(data);
+/*
+var can0 = document.querySelector('canvas0');
+  can0.style.position = 'absolute';
+  can0.style.top = "80px";
+  can0.style.left = "10px";
+
+  var can1 = document.querySelector('canvas1');
+    can1.style.position = 'absolute';
+    can1.style.top = "80px";
+    can1.style.left = "210px";
+
+    var can2 = document.querySelector('canvas2');
+      can2.style.position = 'absolute';
+      can2.style.top = "80px";
+      can2.style.left = "10px";
+*/
+
+
 // console.log(Speisen);
 /*
 let cvs2 = document.getElementById("cvs2");

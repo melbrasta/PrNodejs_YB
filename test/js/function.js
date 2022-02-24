@@ -1,16 +1,15 @@
-function showSpeisen()      // Zeige alle Produkte der Kategorie 1 (Speisen)
-{
-   return new Promise( (resolve,rej)=> {
-
-     let db = new sqlite3.Database('Kassensystem.db');
-     db.all('SELECT * FROM (Produkte) WHERE Kategorie_ID = 1', (err,row)=> {
-      //console.log( row);
-      resolve(row);
-    });
-    db.close();
-  });
-
-
+function showSpeisen() {
+    fetch('/getSpeisen')
+        .then(function (resp) {
+            // Mache aus der Serverantwort Buttons
+            resp.json().then((speisen) => {
+                let categories = document.getElementById("categories");
+                clearDiv(categories)
+                speisen.forEach((speise) => {
+                    categories.innerHTML += createSpeiseButton(speise.ID, speise.Name)
+                })
+            })
+        })
 }
 
 function showGetraenke()      // Zeige alle Produkte der Kategorie 2 (getränke)
@@ -71,4 +70,38 @@ function showToGo()      // Zeige alle Produkte der Kategorie 5 (ToGo)
   });
 
 
+}
+
+// function fuegeWarenKorbHinzu(kategorieId, produktId, produktName) {
+//     warenkorb.push({
+//         kategorieId: kategorieId,
+//         produktId: produktId,
+//         produktName: produktName,
+//     });
+//     // Wir holen uns ein div (ueber die ID) und schreiben in sein "innerHTML"
+//     // (alles was im <div> ... </div> drin steht) neue Eintraege
+//     let warenkorbDiv = document.getElementById("warenkorb");
+//     clearDiv(warenkorbDiv);
+//     warenkorb.forEach((produkt) => {
+//         // Erstelle eine Liste mit Warenkorbeintraegen
+//         warenkorbDiv.innerHTML += `<li>${produkt.produktName}</li>`
+//     })
+// }
+
+
+function createSpeiseButton(id, name) {
+    return `<button >${name}</button><br/>`
+}
+
+function clearDiv(div) {
+    div.innerHTML = ""
+}
+
+
+function bestellen() {
+    const options = {
+        method: 'POST',
+        body: JSON.stringify(warenkorb)
+    };
+    fetch('/doBestellung', options);
 }
