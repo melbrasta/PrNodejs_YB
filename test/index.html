@@ -8,33 +8,14 @@
     <script scr='style.css'></script>
     <script src='http://localhost:8000/getData'></script>
    <script src='js/function.js'></script>
-    <h1>Kategorie</h1>
-        <div class= "box" id="categories">
-    <!-- <canvas id="cvs0" width=200px height=600px style="background-color:#F1F1F1 ;border: 2px solid #000000;">
-            </canvas> -->
-        </div>
-            <div class= "box" id="produkte">
-    <!-- <canvas id="cvs1" width=900px height=600px style="background-color:#F1F1F1 ;border: 2px solid #000000;">
-        </canvas> -->
-          </div>
-            <div class= "box" id="rechnung">
-    <!-- <canvas id="cvs2" width=200px height=600px style="background-color:#F1F1F1 ;border: 2px solid #000000;">
-            </canvas> -->
-                </div>
-    <br />
-    <br />
+    <h2>Kategorie</h2>
 
 
+   <canvas id="Kategor" width=170px height=175px style="background-color:#F1F1F1 ;position:absolute; z-index:-1 ;border: 2px solid #000000;">
+</canvas>
 
-
-
-
-<!--    <canvas id="cvs3" width=200px height=200px style="background-color:#F1F1F1 ;position:absolute; top:602; left:1110;z-index:-1 ;border: 2px solid #000000;">
-</canvas>-->
-<!--    <button onclick= 'show1()' >Speisen</button>   //so nicht möglich -->
 <form method='post'>
     <input border="1px solid" id="Kat1" name="Speisen" onclick="showSpeisen()" type="button" value="Speisen">
-    <!--<button onclick="myFunction()">Click me</button>  -->
     <br/>
     <br/>
     <input border="1px solid" id="Kat2" name="Getraenke" onclick="showGetraenke()" type="button" value="Getraenke">
@@ -47,11 +28,40 @@
     <br/>
     <br/>
     <input border="1px solid" id="Kat5" name="Außer Haus verkauf" onclick="showToGo()" type="button" value="Außer Haus verkauf">
+
     <br/>
     <br/>
-    <input type="submit" value="Abbrechen" onclick="clearWarenkorb(produkte)">
+    <hr />
+
+      <div class= "box" id="categories">
+        </div>
+    <h2>Aktuelle Bestellung</h2>
+    <div class= "box" id="test">
+
+        </div>
+
+
+
+
+    <!-- <canvas id="bestell" width=200px height=400px style="background-color:#F1F1F1; position:relative; float: left; border: 2px solid #000000;">
+            </canvas> -->
+          </div>
+            <div class= "box" id="rechnung">
+    <!-- <canvas id="cvs2" width=200px height=600px style="background-color:#F1F1F1 ;border: 2px solid #000000;">
+            </canvas> -->
+                </div>
+    <br/>
+    <input type="submit" value="Abbrechen" onclick="clearWarenkorb(test)">
     <input type="button" onclick="bestellen()" type="button" value="Bestellen">
     <input type="submit" onclick="rechnungZiehen()" value="Rechnung Drucken">
+  <br />
+  <br />
+
+
+
+
+<br />
+<br />
 
 </form>
 <script>

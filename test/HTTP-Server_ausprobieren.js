@@ -198,7 +198,7 @@ const server = http.createServer( ( req, res ) => {
 					// Baue aus dem String wieder ein Objekt
 
 					let bestellungen = JSON.parse(body);
-					console.log(bestellungen);
+//					console.log(bestellungen);
 //					bestellungen = summiereEinzelprodukte(bestellungen)
 					// TODO: Es wird noch nicht unterschieden, was genau in einer Rechnung ist, also braucht man noch Rechnungsnummern, diese muessen auch in der Datenbank stehen (neue Spalte)
 					bestellungen.forEach((bestellung) =>

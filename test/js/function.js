@@ -173,40 +173,50 @@ function fuegeWarenKorbHinzu(anzahl, produktName, preis, MwSt)
     });
     // Wir holen uns ein div (ueber die ID) und schreiben in sein "innerHTML"
     // (alles was im <div> ... </div> drin steht) neue Eintraege
-    let warenkorbDiv = document.getElementById("produkte");
+    let warenkorbDiv = document.getElementById("test");
     clearDiv(warenkorbDiv);
-    warenkorbDiv.innerHTML += `<h2>Aktuelle Bestellung:</h2>`
     warenkorb.forEach((Warenkorb) => {
         // Erstelle eine Liste mit Warenkorbeintraegen
         console.log(Warenkorb);
-        warenkorbDiv.innerHTML += `<ul><li>${Warenkorb.anzahl}x ${Warenkorb.produktName} ------ ${Warenkorb.preis} € (inkl ${Warenkorb.MwSt}% MwSt)</li></ul>`
+        warenkorbDiv.innerHTML += `<ul><li>${Warenkorb.anzahl}x ${Warenkorb.produktName} ------ ${Warenkorb.preis} € (inkl ${Warenkorb.MwSt}% MwSt)<hr></li></ul>`
+
     })
+    let sum=0
+warenkorb.forEach(A => sum += A.preis)
+warenkorbDiv.innerHTML += `${sum.toFixed(2)}€ Gesamt`;
+
 }
 
 function clearWarenkorb()
 {
 warenkorb = [];
-clearDiv(produkte)
+clearDiv(test)
 }
 
 
 function schreibeRechnung()
 {
+aktuellerechnung = [];
   clearDiv(rechnung);
-let aktuelleRechnungDiv = document.getElementById("rechnung");
+let aktuelleRechnungDiv = document.getElementById("test");
       console.log(warenkorb);
-      clearDiv(produkte)
+      clearDiv(test)
       aktuelleRechnungDiv.innerHTML += '<h2>Unbezahlte Rechnung:</h2><br>'
       warenkorb.forEach((Rech) => {
+        aktuellerechnung.push(Rech);
           // Erstelle eine Liste mit Warenkorbeintraegen
-          console.log(Rech);
-          aktuelleRechnungDiv.innerHTML += `<ol><li>${Rech.anzahl}x ${Rech.produktName} ------ ${Rech.preis} € (inkl ${Rech.MwSt}% MwSt)</li></ol>`
+          console.log(aktuellerechnung);
+          aktuelleRechnungDiv.innerHTML += `<ul><li>${Rech.anzahl}x ${Rech.produktName} ------ ${Rech.preis} € (inkl ${Rech.MwSt}% MwSt)<hr/></li></ul>`
       })
+      let sum=0
+  warenkorb.forEach(A => sum += A.preis)
+  aktuelleRechnungDiv.innerHTML += `${sum.toFixed(2)}€ Gesamt`;
+
 }
 
 function rechnungZiehen()
 {
-  clearDiv(rechnung);
+  clearDiv(test);
   warenkorb = [];
 }
 // Einen Warenkorb an den Server senden (mit einem POST-Request)
@@ -219,6 +229,7 @@ function bestellen()
     };
     fetch('/doBestellung', options);
     schreibeRechnung();
+    console.log(warenkorb);
 
 }
 
