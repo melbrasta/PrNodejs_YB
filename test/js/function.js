@@ -7,16 +7,16 @@ function showSpeisen()
                 let categories = document.getElementById("categories");
                 clearDiv(categories)
                 speisen.forEach((speise) => {
-                    categories.innerHTML += createSpeiseButton(speise.Name, speise.Preis)
+                    categories.innerHTML += createSpeiseButton(speise.Name, speise.Preis, speise.MwSt)
                 })
             })
         })
 }
 
 
-function createSpeiseButton( name, preis)
+function createSpeiseButton( name, preis, MwSt)
 {
-  return `<button onclick="fuegeWarenKorbHinzu(1, '${name}',${preis})">${name},${preis} €</button><br/>`
+  return `<button onclick="fuegeWarenKorbHinzu(1, '${name}',${preis},${MwSt})">${name},${preis} € </button><br/>`
 }
 
 
@@ -121,11 +121,15 @@ function fuegeWarenKorbHinzu(anzahl, produktName, preis, MwSt)
     warenkorb.forEach((Warenkorb) => {
         // Erstelle eine Liste mit Warenkorbeintraegen
         console.log(Warenkorb);
-        warenkorbDiv.innerHTML += `<ul><li>${Warenkorb.anzahl}x ${Warenkorb.produktName} ------ ${Warenkorb.preis} € (inkl ${Warenkorb.MwSt})</li></ul>`
+        warenkorbDiv.innerHTML += `<ul><li>${Warenkorb.anzahl}x ${Warenkorb.produktName} ------ ${Warenkorb.preis} € (inkl ${Warenkorb.MwSt}% MwSt)</li></ul>`
     })
 }
 
-
+function clearWarenkorb()
+{
+warenkorb = [];
+clearDiv(rechnung)
+}
 // Einen Warenkorb an den Server senden (mit einem POST-Request)
 
 function bestellen()

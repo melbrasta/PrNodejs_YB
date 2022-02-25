@@ -154,6 +154,9 @@ const server = http.createServer( ( req, res ) => {
 			return MwSt;
 	}
 
+
+
+
 	/**
 	 * Macht ein insert-Statement auf der Datenbank
 	 * Ist asynchron (async function), sodass man auf die Datenbank-Anfrage warten kann (await)
@@ -177,13 +180,13 @@ const server = http.createServer( ( req, res ) => {
 
 
 
-	//hier Fehlt noch was....
+
 	if (req.method === 'POST' && req.url =='/doBestellung')
 	{
 			console.log(req.method);
 			let body = String();
 
-			console.log("Das ist der Body: " + body);
+			console.log("zeile 189: Das ist der Body: " + body);
 			req.on('data', function (data) {
 					body += data;
 								console.log(body);
@@ -194,13 +197,7 @@ const server = http.createServer( ( req, res ) => {
 					// Baue aus dem String wieder ein Objekt
 
 					let bestellungen = JSON.parse(body);
-
-					// Schreibe Bestellung in DB
-					/**
-					 * [{ name: bla}, {name: bla}, {name: bla}] =>
-					 * [{ name: bla, anzahl: 3}]
-					 * -> Ist eine neue Funktion die noch geschrieben werden muss
-					 */
+					console.log(bestellungen);
 //					bestellungen = summiereEinzelprodukte(bestellungen)
 					// TODO: Es wird noch nicht unterschieden, was genau in einer Rechnung ist, also braucht man noch Rechnungsnummern, diese muessen auch in der Datenbank stehen (neue Spalte)
 					bestellungen.forEach((bestellung) =>
@@ -210,16 +207,14 @@ const server = http.createServer( ( req, res ) => {
 							let mehrwertSteuerProm = getMehrwertSteuer(bestellung);
 							stueckPreisProm.then(function (stueckPreis) {
 									mehrwertSteuerProm.then(function (mehrwertSteuer) {
-											//FIXME: mehrwertSteuer: Wird nicht verwendet weil komisch gerade
-											//FIXME: In der Datenbank und sonst wo immer nur Namen und keine Leer- und Sonderzeichen verwenden, macht nur aua!
-											console.log("Start")
+//											console.log("Start")
 //											console.log(stueckPreis[0].Preis)
 											// console.log(`INSERT INTO Rechnungsposition (Produkt, Anzahl, Stueckpreis, MwSt)
 											// 						 VALUES ('${bestellung.produktName}', 1, ${bestellung.Preis},
 											// 										 19)`)
 											// TODO: Es wird noch nicht geprueft, ob ein Produkt mehrfach vorkommt --- zusammenrechen!
 											let statement = `INSERT INTO Rechnungsposition (Produkt, Anzahl, Stueckpreis, MwSt)
-																			 VALUES ('${bestellung.produktName}', 1, ${bestellung.Preis},${bestellung.MwSt})`
+																			 VALUES ('${bestellung.produktName}', ${bestellung.anzahl}, ${bestellung.preis},${bestellung.MwSt})`
 											runInsertStatement(statement).then(() => {
 													console.log("Ende")
 											})
