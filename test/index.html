@@ -9,15 +9,15 @@
     <script src='http://localhost:8000/getData'></script>
    <script src='js/function.js'></script>
     <h1>Kategorie</h1>
-        <div class= "canvas0" id="categories">
+        <div class= "box" id="categories">
     <!-- <canvas id="cvs0" width=200px height=600px style="background-color:#F1F1F1 ;border: 2px solid #000000;">
             </canvas> -->
         </div>
-            <div class= "canvas1" id="produkte">
+            <div class= "box" id="produkte">
     <!-- <canvas id="cvs1" width=900px height=600px style="background-color:#F1F1F1 ;border: 2px solid #000000;">
         </canvas> -->
           </div>
-            <div class= "canvas2" id="rechnung">
+            <div class= "box" id="rechnung">
     <!-- <canvas id="cvs2" width=200px height=600px style="background-color:#F1F1F1 ;border: 2px solid #000000;">
             </canvas> -->
                 </div>
@@ -51,7 +51,7 @@
     <br/>
     <input type="submit" value="Abbrechen" onclick="clearWarenkorb(produkte)">
     <input type="button" onclick="bestellen()" type="button" value="Bestellen">
-    <input type="submit" value="Rechnung Drucken">
+    <input type="submit" onclick="rechnungZiehen()" value="Rechnung Drucken">
 
 </form>
 <script>

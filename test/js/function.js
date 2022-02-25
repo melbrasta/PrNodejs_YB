@@ -163,6 +163,7 @@ var warenkorb = [];
 
 function fuegeWarenKorbHinzu(anzahl, produktName, preis, MwSt)
 {
+
     warenkorb.push({
         anzahl : anzahl,
         produktName: produktName,
@@ -174,6 +175,7 @@ function fuegeWarenKorbHinzu(anzahl, produktName, preis, MwSt)
     // (alles was im <div> ... </div> drin steht) neue Eintraege
     let warenkorbDiv = document.getElementById("produkte");
     clearDiv(warenkorbDiv);
+    warenkorbDiv.innerHTML += `<h2>Aktuelle Bestellung:</h2>`
     warenkorb.forEach((Warenkorb) => {
         // Erstelle eine Liste mit Warenkorbeintraegen
         console.log(Warenkorb);
@@ -190,10 +192,11 @@ clearDiv(produkte)
 
 function schreibeRechnung()
 {
+  clearDiv(rechnung);
 let aktuelleRechnungDiv = document.getElementById("rechnung");
       console.log(warenkorb);
       clearDiv(produkte)
-      aktuelleRechnungDiv.innerHTML += '<h2>Rechnung</h2><br>'
+      aktuelleRechnungDiv.innerHTML += '<h2>Unbezahlte Rechnung:</h2><br>'
       warenkorb.forEach((Rech) => {
           // Erstelle eine Liste mit Warenkorbeintraegen
           console.log(Rech);
@@ -201,7 +204,11 @@ let aktuelleRechnungDiv = document.getElementById("rechnung");
       })
 }
 
-
+function rechnungZiehen()
+{
+  clearDiv(rechnung);
+  warenkorb = [];
+}
 // Einen Warenkorb an den Server senden (mit einem POST-Request)
 
 function bestellen()
