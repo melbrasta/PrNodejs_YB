@@ -29,15 +29,15 @@ fetch('/getGetraenke')
             let categories = document.getElementById("categories");
             clearDiv(categories)
             getraenke.forEach((getraenk) => {
-                categories.innerHTML += createGetraenkeButton( getraenk.Name, getraenk.Preis)
+                categories.innerHTML += createGetraenkeButton( getraenk.Name, getraenk.Preis, getraenk.MwSt)
             })
         })
     })
 }
 
-function createGetraenkeButton(name, preis)
+function createGetraenkeButton( name, preis, MwSt)
 {
-    return `<button >${name}, ${preis} €</button><br/>`
+    return `<button onclick="fuegeWarenKorbHinzu(1, '${name}',${preis},${MwSt})">${name},${preis} € </button><br/>`
   }
 
 
@@ -50,15 +50,15 @@ function showNachspeisen()      // Zeige alle Produkte der Kategorie 3 (Nachspei
               let categories = document.getElementById("categories");
               clearDiv(categories)
               nachspeisen.forEach((nachspeise) => {
-                  categories.innerHTML += createNachspeisenButton( nachspeise.Name, nachspeise.Preis)
+                  categories.innerHTML += createNachspeisenButton( nachspeise.Name, nachspeise.Preis, nachspeise.MwSt)
               })
           })
       })
   }
 
-  function createNachspeisenButton(name, preis)
-  {
-      return `<button >${name}, ${preis} €</button><br/>`
+  function createNachspeisenButton( name, preis, MwSt)
+{
+      return `<button onclick="fuegeWarenKorbHinzu(1, '${name}',${preis},${MwSt})">${name},${preis} € </button><br/>`
     }
 
 function showCocktails()      // Zeige alle Produkte der Kategorie 4 (Cocktails)
@@ -70,15 +70,15 @@ function showCocktails()      // Zeige alle Produkte der Kategorie 4 (Cocktails)
               let categories = document.getElementById("categories");
               clearDiv(categories)
               cocktails.forEach((cocktail) => {
-                  categories.innerHTML += createCocktailsButton( cocktail.Name, cocktail.Preis)
+                  categories.innerHTML += createCocktailsButton( cocktail.Name, cocktail.Preis, cocktail.MwSt)
               })
           })
       })
   }
 
-function createCocktailsButton(name, preis)
-  {
-      return `<button >${name}, ${preis} €</button><br/>`
+function createCocktailsButton( name, preis, MwSt)
+{
+      return `<button onclick="fuegeWarenKorbHinzu(1, '${name}',${preis},${MwSt})">${name},${preis} € </button><br/>`
     }
 
 function showToGo()      // Zeige alle Produkte der Kategorie 5 (ToGo)
@@ -90,16 +90,72 @@ function showToGo()      // Zeige alle Produkte der Kategorie 5 (ToGo)
               let categories = document.getElementById("categories");
               clearDiv(categories)
               togo.forEach((Togo) => {
-                  categories.innerHTML += createCocktailsButton( Togo.Name, Togo.Preis)
+                  categories.innerHTML += createCocktailsButton( Togo.Name, Togo.Preis, Togo.MwSt)
               })
           })
       })
   }
 
-  function createToGoButton(name, preis)
-    {
-        return `<button >${name}, ${preis} €</button><br/>`
+function createToGoButton( name, preis, MwSt)
+{
+        return `<button onclick="fuegeWarenKorbHinzu(1, '${name}',${preis},${MwSt})">${name},${preis} € </button><br/>`
       }
+
+
+
+function readFromDatabase()
+{
+
+      		return new Promise( (resolve,rej)=> {
+
+      			let promises = [];
+
+
+      			promises.push( showSpeisen() );
+      			promises.push( showGetraenke() );
+      			promises.push( showNachspeisen() );
+      			promises.push( showCocktails() );
+      			promises.push( showToGo() );
+
+      			Promise.all( promises ) .then( results => { resolve( results )})
+
+
+      		});
+
+      	}
+
+function getStueckPreis(buchung)
+{
+      			// TODO: Raus lösen, sodass man es nicht immer definieren muss
+      			let db = new sqlite3.Database('Kassensystem.db');
+      			let stueckpreis = new Promise((resolve, rej) => {
+      					db.all(`SELECT Preis
+      									FROM (Produkte)
+      									WHERE ID = ${buchung.produktId}`, (err, row) => {
+      							resolve(row);
+      					});
+      			});
+      			db.close();
+      			return stueckpreis;
+      	}
+
+
+function getMehrwertSteuer(buchung)
+{
+      			// TODO: Raus lösen, sodass man es nicht immer definieren muss
+      			let db = new sqlite3.Database('Kassensystem.db');
+      			let MwSt = new Promise((resolve, rej) => {
+      					db.all(`SELECT MwSt
+      									FROM (Produkte)
+      									WHERE ID = ${buchung.produktId}`, (err, row) => {
+      							resolve(row);
+      					});
+      			});
+      			db.close();
+      			return MwSt;
+      	}
+
+
 
 
 
@@ -116,7 +172,7 @@ function fuegeWarenKorbHinzu(anzahl, produktName, preis, MwSt)
     });
     // Wir holen uns ein div (ueber die ID) und schreiben in sein "innerHTML"
     // (alles was im <div> ... </div> drin steht) neue Eintraege
-    let warenkorbDiv = document.getElementById("rechnung");
+    let warenkorbDiv = document.getElementById("produkte");
     clearDiv(warenkorbDiv);
     warenkorb.forEach((Warenkorb) => {
         // Erstelle eine Liste mit Warenkorbeintraegen
@@ -128,8 +184,24 @@ function fuegeWarenKorbHinzu(anzahl, produktName, preis, MwSt)
 function clearWarenkorb()
 {
 warenkorb = [];
-clearDiv(rechnung)
+clearDiv(produkte)
 }
+
+
+function schreibeRechnung()
+{
+let aktuelleRechnungDiv = document.getElementById("rechnung");
+      console.log(warenkorb);
+      clearDiv(produkte)
+      aktuelleRechnungDiv.innerHTML += '<h2>Rechnung</h2><br>'
+      warenkorb.forEach((Rech) => {
+          // Erstelle eine Liste mit Warenkorbeintraegen
+          console.log(Rech);
+          aktuelleRechnungDiv.innerHTML += `<ol><li>${Rech.anzahl}x ${Rech.produktName} ------ ${Rech.preis} € (inkl ${Rech.MwSt}% MwSt)</li></ol>`
+      })
+}
+
+
 // Einen Warenkorb an den Server senden (mit einem POST-Request)
 
 function bestellen()
@@ -139,6 +211,8 @@ function bestellen()
         body: JSON.stringify(warenkorb)
     };
     fetch('/doBestellung', options);
+    schreibeRechnung();
+
 }
 
 
