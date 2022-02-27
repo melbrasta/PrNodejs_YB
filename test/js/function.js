@@ -255,6 +255,7 @@ function rechnungZiehen()
   cleargesamt();
   clearwechsel ();
   warenkorb = [];
+  aktuellerechnung = [];
 }
 // Einen Warenkorb an den Server senden (mit einem POST-Request)
 
@@ -276,6 +277,7 @@ function bestellen()
 function rueckgeld ()
 {
   clearwechsel ();
+  schreibeRechnung();
   var Gegeben = document.getElementById("gegeben").value;
   let cvs = document.getElementById("wechselgeld");
   let ctx = cvs.getContext("2d");
