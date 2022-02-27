@@ -10,11 +10,6 @@
    <script src='js/function.js'></script>
     <h2>Kategorie</h2>
 
-
-   <!-- <canvas class="box" id="Kategor" width=170px height=175px style="background-color:#F1F1F1 ;position:absolute; z-index:-1 ;border: 2px solid #000000;">
-</canvas> -->
-
-
 <form method='post'>
   <div class= "box" id="buttons" style="display: flex";>
     <input border="1px solid" id="Kat1" name="Speisen" onclick="showSpeisen()" type="button" value="Speisen">
@@ -49,17 +44,32 @@
             </canvas> -->
           </div>
             <div class= "box" id="rechnung">
-    <!-- <canvas id="cvs2" width=200px height=600px style="background-color:#F1F1F1 ;border: 2px solid #000000;">
-            </canvas> -->
-                </div>
+              <strong>Gesamtpreis:</strong>
+    <canvas id="cvs2" width=200px height=50px style="background-color:#F1F1F1 ;border: 2px solid #000000;">
+            </canvas>
+            </div>
+            <strong>Gegeben:</strong>
+            <input type="text" id="gegeben" value="0">
+            <input type="button" id="wechsel" onclick="rueckgeld()" value="Wechselgeld anzeigen">
+            <strong>Wechselgeld:</strong>
+            <canvas id="wechselgeld" width=200px height=50px style="background-color:#F1F1F1 ;border: 2px solid #000000;">
+                    </canvas>
+
+
+
+          <div class = "box" id = "wechsel">
+
+
+          </div>
+
+
+
     <br/>
     <input type="submit" value="Abbrechen" onclick="clearWarenkorb(test)">
     <input type="button" onclick="bestellen()" type="button" value="Bestellen">
     <input type="submit" onclick="rechnungZiehen()" value="Rechnung Drucken">
   <br />
   <br />
-
-
 
 
 <br />
@@ -69,26 +79,6 @@
 <script>
 
 console.log(data);
-/*    klappt nicht
-var can0 = document.querySelector('canvas0');
-  can0.style.position = 'absolute';
-  can0.style.top = "80px";
-  can0.style.left = "10px";
-
-  var can1 = document.querySelector('canvas1');
-    can1.style.position = 'absolute';
-    can1.style.top = "80px";
-    can1.style.left = "210px";
-
-    var can2 = document.querySelector('canvas2');
-      can2.style.position = 'absolute';
-      can2.style.top = "80px";
-      can2.style.left = "10px";
-*/
-
-
-// console.log(Speisen);
-
 
 
 

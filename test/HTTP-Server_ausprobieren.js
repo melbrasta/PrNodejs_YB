@@ -169,7 +169,7 @@ const server = http.createServer( ( req, res ) => {
 					if (err) {
 							return console.log("FEHLER!!!!: " + err.message);
 					} else {
-							return console.log("Alles gut :)")
+							return console.log("Alles gut :) Rechnung wurde in die Datenbank geschrieben")
 					}
 
 			});
@@ -184,8 +184,8 @@ const server = http.createServer( ( req, res ) => {
 	{
 //		console.log(req.method);
 			let body = String();
+//console.log(" Das ist der Warenkorb: " + body);
 
-//			console.log(" Das ist der Warenkorb: " + body);
 			req.on('data', function (data) {
 					body += data;
 

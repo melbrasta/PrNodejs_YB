@@ -16,7 +16,7 @@ function showSpeisen()
 
 function createSpeiseButton( name, preis, MwSt)
 {
-  return `<button onclick="fuegeWarenKorbHinzu(1, '${name}',${preis},${MwSt})">${name},${preis} € </button><br/>`
+  return `<button onclick="fuegeWarenKorbHinzu(1, '${name}',${preis},${MwSt})">${name},${preis}€ </button><br/>`
 }
 
 
@@ -177,46 +177,83 @@ function fuegeWarenKorbHinzu(anzahl, produktName, preis, MwSt)
     clearDiv(warenkorbDiv);
     warenkorb.forEach((Warenkorb) => {
         // Erstelle eine Liste mit Warenkorbeintraegen
-        console.log(Warenkorb);
+    //    console.log(Warenkorb);
         warenkorbDiv.innerHTML += `<ul><li>${Warenkorb.anzahl}x ${Warenkorb.produktName} ------ ${Warenkorb.preis} € (inkl ${Warenkorb.MwSt}% MwSt)<hr></li></ul>`
 
     })
-    let sum=0;
+    sum=0;
 warenkorb.forEach(A => sum += A.preis)
-warenkorbDiv.innerHTML += `<strong>${sum.toFixed(2)}€ Gesamt</strong>`;
-// return sum;
+//warenkorbDiv.innerHTML += `<strong>Gesamtpreis:</strong>`;
+cleargesamt();
+
+let cvs = document.getElementById("cvs2");
+let ctx = cvs.getContext("2d");
+ctx.font = "30px Arial";
+ctx.textAlign = "center";
+ctx.fillText(sum.toFixed(2)+"€", 100, 35);
+//return sum;
 }
+
+
+
+function cleargesamt ()
+{
+  let cvs = document.getElementById("cvs2");
+  let ctx = cvs.getContext("2d");
+  ctx.clearRect(0, 0, cvs.width, cvs.height);
+}
+
+function clearwechsel ()
+{
+  let cvs = document.getElementById("wechselgeld");
+  let ctx = cvs.getContext("2d");
+  ctx.clearRect(0, 0, cvs.width, cvs.height);
+}
+
+
 
 function clearWarenkorb()
 {
 warenkorb = [];
 clearDiv(test)
+cleargesamt();
+clearwechsel ();
 }
 
 
 function schreibeRechnung()
 {
 aktuellerechnung = [];
-  clearDiv(rechnung);
+//  clearDiv(rechnung);
 let aktuelleRechnungDiv = document.getElementById("test");
-      console.log(warenkorb);
+//      console.log(warenkorb);
       clearDiv(test)
       aktuelleRechnungDiv.innerHTML += '<h2>Unbezahlte Rechnung:</h2><br>'
       warenkorb.forEach((Rech) => {
         aktuellerechnung.push(Rech);
           // Erstelle eine Liste mit Warenkorbeintraegen
-          console.log(aktuellerechnung);
+//          console.log(aktuellerechnung);
+
           aktuelleRechnungDiv.innerHTML += `<ul><li>${Rech.anzahl}x ${Rech.produktName} ------ ${Rech.preis} € (inkl ${Rech.MwSt}% MwSt)<hr/></li></ul>`
       })
-      let sum=0
+      cleargesamt();
+       sum=0
   warenkorb.forEach(A => sum += A.preis)
-  aktuelleRechnungDiv.innerHTML += `${sum.toFixed(2)}€ Gesamt`;
+//  aktuelleRechnungDiv.innerHTML += `${sum.toFixed(2)}€ Gesamt`;
+  let cvs = document.getElementById("cvs2");
+  let ctx = cvs.getContext("2d");
+  ctx.font = "30px Arial";
+  ctx.textAlign = "center";
+  ctx.fillText(sum.toFixed(2)+"€", 100, 35);
+
 
 }
 
 function rechnungZiehen()
 {
   clearDiv(test);
+  cleargesamt();
+  clearwechsel ();
   warenkorb = [];
 }
 // Einen Warenkorb an den Server senden (mit einem POST-Request)
@@ -226,16 +263,36 @@ function bestellen()
     const options = {
         method: 'POST',
         body: JSON.stringify(warenkorb)
+
     };
+
     fetch('/doBestellung', options);
     schreibeRechnung();
-    console.log(warenkorb);
+    rueckgeld ();
+//    console.log(warenkorb + "in der funktion bestellen");   //leeres Objekt????
 
 }
 
 function rueckgeld ()
 {
-  return eingabe-sum;
+  clearwechsel ();
+  var Gegeben = document.getElementById("gegeben").value;
+  let cvs = document.getElementById("wechselgeld");
+  let ctx = cvs.getContext("2d");
+  let diff = Gegeben - sum.toFixed(2);
+  ctx.font = "30px Arial";
+  ctx.textAlign = "center";
+  if (diff <0)
+  {
+    ctx.font = "18px Arial";
+    ctx.fillStyle = "red";
+    ctx.fillText(`Es fehlen noch ${Math.abs(diff)} €`, 100, 35);
+  }else
+  {
+  ctx.fillStyle = "black";
+  ctx.fillText(diff+"€", 100, 35);
+  }
+
 }
 
 function clearDiv(div)
