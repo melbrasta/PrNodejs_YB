@@ -11,10 +11,12 @@
     <h2>Kategorie</h2>
 
 
-   <canvas id="Kategor" width=170px height=175px style="background-color:#F1F1F1 ;position:absolute; z-index:-1 ;border: 2px solid #000000;">
-</canvas>
+   <!-- <canvas class="box" id="Kategor" width=170px height=175px style="background-color:#F1F1F1 ;position:absolute; z-index:-1 ;border: 2px solid #000000;">
+</canvas> -->
+
 
 <form method='post'>
+  <div class= "box" id="buttons" style="display: flex";>
     <input border="1px solid" id="Kat1" name="Speisen" onclick="showSpeisen()" type="button" value="Speisen">
     <br/>
     <br/>
@@ -28,12 +30,12 @@
     <br/>
     <br/>
     <input border="1px solid" id="Kat5" name="Außer Haus verkauf" onclick="showToGo()" type="button" value="Außer Haus verkauf">
-
+</div>
     <br/>
     <br/>
     <hr />
 
-      <div class= "box" id="categories">
+      <div class= "box" id="categories" style="display: flex";>
         </div>
     <h2>Aktuelle Bestellung</h2>
     <div class= "box" id="test">

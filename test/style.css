@@ -1,5 +1,5 @@
 .box {
-    display:inline-block;
+    display:flex;
     position:relative;
      float: left;
      width: 30%;
@@ -9,8 +9,10 @@
      box-sizing: border-box;
 }
 
+.Kategor
+
 #categories{
-display:inline-block;
+display:flex;
 position:relative;
    float: left;
    width: 30%;

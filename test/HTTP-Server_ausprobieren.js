@@ -173,7 +173,6 @@ const server = http.createServer( ( req, res ) => {
 					}
 
 			});
-			console.log("Ende")
 			db.close();
 	}
 
@@ -183,10 +182,10 @@ const server = http.createServer( ( req, res ) => {
 
 	if (req.method === 'POST' && req.url =='/doBestellung')
 	{
-			console.log(req.method);
+//		console.log(req.method);
 			let body = String();
 
-			console.log(" Das ist der Warenkorb: " + body);
+//			console.log(" Das ist der Warenkorb: " + body);
 			req.on('data', function (data) {
 					body += data;
 
@@ -212,7 +211,6 @@ const server = http.createServer( ( req, res ) => {
 											let statement = `INSERT INTO Rechnungsposition (Produkt, Anzahl, Stueckpreis, MwSt)
 																			 VALUES ('${bestellung.produktName}', ${bestellung.anzahl}, ${bestellung.preis},${bestellung.MwSt})`
 											runInsertStatement(statement).then(() => {
-													console.log("Ende")
 											})
 
 									});

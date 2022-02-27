@@ -181,10 +181,10 @@ function fuegeWarenKorbHinzu(anzahl, produktName, preis, MwSt)
         warenkorbDiv.innerHTML += `<ul><li>${Warenkorb.anzahl}x ${Warenkorb.produktName} ------ ${Warenkorb.preis} € (inkl ${Warenkorb.MwSt}% MwSt)<hr></li></ul>`
 
     })
-    let sum=0
+    let sum=0;
 warenkorb.forEach(A => sum += A.preis)
-warenkorbDiv.innerHTML += `${sum.toFixed(2)}€ Gesamt`;
-
+warenkorbDiv.innerHTML += `<strong>${sum.toFixed(2)}€ Gesamt</strong>`;
+// return sum;
 }
 
 function clearWarenkorb()
@@ -233,7 +233,10 @@ function bestellen()
 
 }
 
-
+function rueckgeld ()
+{
+  return eingabe-sum;
+}
 
 function clearDiv(div)
 {
